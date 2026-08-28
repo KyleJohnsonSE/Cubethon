@@ -30,18 +30,11 @@ public class Movement : MonoBehaviour
         rigidBody = GetComponent<Rigidbody>();
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        rigidBody.useGravity = false;
-    }
-
-    // Update is called once per frame
     void FixedUpdate()
     {
         movementInput = moveAction.ReadValue<Vector2>();
         float xSpeed = movementInput.x*movementSpeed;
 
-        rigidBody.linearVelocity = new Vector3(xSpeed, 0, forwardSpeed);
+        rigidBody.linearVelocity = new Vector3(xSpeed, rigidBody.linearVelocity.y, forwardSpeed);
     }
 }
