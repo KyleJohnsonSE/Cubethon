@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Movement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     public InputActionAsset InputActions;
 
@@ -13,12 +13,12 @@ public class Movement : MonoBehaviour
     public float forwardSpeed = 5;
     public float movementSpeed = 5;
 
-    private void onEnable()
+    private void OnEnable()
     {
         InputActions.FindActionMap("Player").Enable();
     }
 
-    private void onDisable()
+    private void OnDisable()
     {
         InputActions.FindActionMap("Player").Disable();
     }
@@ -30,7 +30,7 @@ public class Movement : MonoBehaviour
         rigidBody = GetComponent<Rigidbody>();
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         movementInput = moveAction.ReadValue<Vector2>();
         float xSpeed = movementInput.x*movementSpeed;
