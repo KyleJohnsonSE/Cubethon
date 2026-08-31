@@ -2,18 +2,18 @@ using UnityEngine;
 
 public class PlayerCollision : MonoBehaviour
 {
-    private PlayerMovement playerMovementScript;
+    private GameManager gameManager;
 
-    private void Awake()
-    {
-        playerMovementScript = GetComponent<PlayerMovement>();
+    private void Start() {
+        gameManager = FindAnyObjectByType<GameManager>();
     }
 
     private void OnCollisionEnter (Collision collisionInfo)
     {
+        // Stops player movement when colliding with an obstacle
         if (collisionInfo.collider.tag == "Obstacle")
         {
-            playerMovementScript.enabled = false;
+            gameManager.EndGame();
         }
     }
 }

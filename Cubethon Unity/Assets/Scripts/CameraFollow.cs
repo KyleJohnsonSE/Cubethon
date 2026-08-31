@@ -2,19 +2,19 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    public Transform target;
+    private PlayerMovement playerMovement;
 
     private Vector3 offset;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
-        offset = transform.position - target.position;
+        playerMovement = FindAnyObjectByType<PlayerMovement>();
+        offset = transform.position - playerMovement.getPos();
     }
 
-    // Update is called once per frame
     private void Update()
     {
-        transform.position = target.position + offset;
+        // Maintains the same offset from the player
+        transform.position = playerMovement.getPos() + offset;
     }
 }
