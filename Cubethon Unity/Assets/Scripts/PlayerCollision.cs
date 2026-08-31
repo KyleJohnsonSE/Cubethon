@@ -13,7 +13,7 @@ public class PlayerCollision : MonoBehaviour
         // Stops player movement when colliding with an obstacle
         if (collisionInfo.collider.tag == "Obstacle")
         {
-            gameManager.EndGame();
+            gameManager.EndGame(false);
         }
     }
 }

@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     private InputAction moveAction;
 
     private PlayerMovement playerMovement;
-    private PlayerCollision playerCollision;
+    private CameraFollow cameraFollow;
     private ScoreDisplay scoreDisplay;
 
     private Vector3 startPos;
@@ -20,14 +20,14 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         playerMovement = FindAnyObjectByType<PlayerMovement>();
-        playerCollision = FindAnyObjectByType<PlayerCollision>();
+        cameraFollow = FindAnyObjectByType<CameraFollow>();
         scoreDisplay = FindAnyObjectByType<ScoreDisplay>();
 
         moveAction = InputSystem.actions.FindAction("Move");
 
         playerMovement.enabled = false;
         startPos = playerMovement.getPos();
-        setTitleScreen();
+        setTitleScreen(false);
     }
 
     private void Update()
@@ -48,27 +48,34 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void setTitleScreen() {
-        scoreDisplay.SetScore($"Top Score: {topScore}\nMove to start");
+    private void setTitleScreen(bool won) {
+        if (won) {
+            scoreDisplay.SetScore($"Top Score: {topScore}\nYou won!");
+        } else {
+            scoreDisplay.SetScore($"Top Score: {topScore}\nMove to start");
+        }
     }
 
-    public void EndGame() {
+    public void EndGame(bool won) {
         if (!gameStopped) {
             gameStopped = true;
             playerMovement.enabled = false;
+            cameraFollow.enabled = false;
             this.enabled = false;
 
             if (score > topScore) {
                 topScore = score;
             }
 
-            Invoke("ResetGame", 2);
+            StartCoroutine(ResetGame(won));
         }
     }
 
-    private void ResetGame() {
+    private IEnumerator ResetGame(bool won) {
+        yield return new WaitForSeconds(2);
         playerMovement.resetToPos(startPos);
-        setTitleScreen();
+        cameraFollow.enabled = true;
+        setTitleScreen(won);
         this.enabled = true;
     }
 }
