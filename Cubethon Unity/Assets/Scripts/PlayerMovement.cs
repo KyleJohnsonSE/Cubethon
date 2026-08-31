@@ -10,8 +10,9 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 movementInput;
     private Rigidbody rigidBody;
 
-    public float forwardSpeed = 5;
-    public float movementSpeed = 5;
+    private float forwardSpeed = 5;
+    private const float movementSpeed = 5;
+    private Vector3 startPos;
 
     private void OnEnable()
     {
@@ -26,8 +27,9 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         moveAction = InputSystem.actions.FindAction("Move");
-
         rigidBody = GetComponent<Rigidbody>();
+
+        startPos = rigidBody.position;
     }
 
     private void FixedUpdate()
@@ -36,5 +38,13 @@ public class PlayerMovement : MonoBehaviour
         float xSpeed = movementInput.x*movementSpeed;
 
         rigidBody.linearVelocity = new Vector3(xSpeed, rigidBody.linearVelocity.y, forwardSpeed);
+    }
+
+    public Vector3 getStartPos() {
+        return startPos;
+    }
+
+    public Vector3 getPos() {
+        return rigidBody.position;
     }
 }
